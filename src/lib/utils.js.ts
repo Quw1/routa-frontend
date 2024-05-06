@@ -63,8 +63,8 @@ export const flyAndScale = (
         easing: cubicOut
     };
 };
-
-export const fetchPostAPI = async (url: string, method: string, data: string, cookies: Cookies): Promise<Response> => {
+//@ts-ignore
+export const fetchPostAPI = async (url: string, method: string, data: any, cookies: Cookies, requestType = 'application/json'): Promise<Response> => {
 
     const access_token = cookies.get('access_token');
     const refresh_token = cookies.get('refresh_token');
@@ -77,7 +77,7 @@ export const fetchPostAPI = async (url: string, method: string, data: string, co
         res = await fetch(`${BackendURL}${url}`, {
             method: method,
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': requestType,
                 'Authorization': 'Bearer ' + access_token,
             },
         });
@@ -86,7 +86,7 @@ export const fetchPostAPI = async (url: string, method: string, data: string, co
         res = await fetch(`${BackendURL}${url}`, {
             method: method,
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': requestType,
                 'Authorization': 'Bearer ' + access_token,
             },
             body: data,
@@ -136,6 +136,11 @@ export const fetchPostAPI = async (url: string, method: string, data: string, co
         return res;
     }
     catch (e) {
-        throw (e);
+        if (e instanceof SyntaxError && method == 'DELETE') {
+        }
+        else {
+            throw (e);
+        }
+        
     }
 }

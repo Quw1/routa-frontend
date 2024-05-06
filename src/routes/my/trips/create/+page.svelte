@@ -21,6 +21,7 @@
 	import { toast } from 'svelte-sonner';
 	import { formSchema, type FormSchema } from './schema';
 	import { Input } from '$lib/components/ui/input';
+	import { LoaderCircle } from 'lucide-svelte';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -37,7 +38,7 @@
 		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, delayed } = form;
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long'
@@ -54,17 +55,12 @@
 	<Form.Field {form} name="name">
 		<Form.Control let:attrs>
 			<Form.Label>Trip name</Form.Label>
-			<Input {...attrs} bind:value={$formData.name} />
+			<Input
+				class="w-[280px] justify-start pl-4 text-left font-normal"
+				bind:value={$formData.name}
+			/>
 		</Form.Control>
 		<Form.Description>The name of your trip</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="destination">
-		<Form.Control let:attrs>
-			<Form.Label>Destination</Form.Label>
-			<Input {...attrs} bind:value={$formData.destination} />
-		</Form.Control>
-		<Form.Description>Where are you going?</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="start_date" class="flex flex-col">
@@ -104,5 +100,11 @@
 			<input hidden value={$formData.start_date} name={attrs.name} />
 		</Form.Control>
 	</Form.Field>
-	<Form.Button>Submit</Form.Button>
+	{#if $delayed}
+		<Form.Button class="" disabled>
+			<LoaderCircle class="animate-spin" />
+			</Form.Button>
+	{:else}
+		<Form.Button class="">Add</Form.Button>
+	{/if}
 </form>

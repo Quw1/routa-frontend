@@ -19,11 +19,14 @@ const create: Action = async (event) => {
         });
     }
 
-    const data = { ...form.data, polyline: '' };
-    console.log(JSON.stringify(data));
+    
+    let d = form.data
+    // @ts-ignore
+	d = {...d, polyline: ''};
+
     
     
-    const res = await fetchPostAPI('/trips/', 'POST', JSON.stringify(data), event.cookies);
+    const res = await fetchPostAPI('/trips/', 'POST', JSON.stringify(d), event.cookies);
     return redirect(302, '/my/trips');
 }
 

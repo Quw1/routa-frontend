@@ -5,7 +5,10 @@ import { formSchema } from "./schema";
 import { zod } from "sveltekit-superforms/adapters";
 import { BackendURL } from "$lib";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({locals}) => {
+  if (locals.user) {
+    throw redirect(302, '/');
+  }
   return {
     form: await superValidate(zod(formSchema)),
   };
@@ -49,7 +52,7 @@ const login: Action = async (event) => {
         maxAge: 60 * 60 * 24 * 30,
       });
 
-    throw redirect(303, '/');
+    throw redirect(302, '/');
 
 
   } else {

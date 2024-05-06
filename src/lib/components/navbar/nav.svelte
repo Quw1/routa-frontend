@@ -7,22 +7,29 @@
 	// import Button from "$lib/components/ui/button/button.svelte";
 	// import * as Card from "$lib/components/ui/card/index.js";
 	// import * as Tabs from "$lib/components/ui/tabs/index.js";
+	import { Badge } from "$lib/components/ui/badge";
 	import {
 		DashboardMainNav,
 		UserNav,
 	} from "./index.js";
     import Search from "$lib/components/search.svelte";
+	export let data;
 	// import DatePickerWithRange from "$lib/components/date-picker-with-range.svelte";
 </script>
 
 <!-- <div class="hidden flex-col md:flex"> -->
 	<div class="border-b">
 		<div class="flex h-16 items-center px-4">
-			
-			<DashboardMainNav class="mx-6" />
+			<Badge class="font-semibold mr-3 text-lg">Routa</Badge> 
+			<DashboardMainNav {data} class="mx-6" />
 			<div class="ml-auto flex items-center space-x-4">
-				<Search />
-				<UserNav />
+				{#if data.user}
+				<UserNav {data} />
+				{:else}
+				<a href="/login" class="text-sm font-medium transition-colors hover:text-primary">
+					Login
+				</a>
+				{/if}
 			</div>
 		</div>
 	</div>

@@ -3,29 +3,32 @@
 
 	let className: string | undefined | null = undefined;
 	export { className as class };
+	export let data;
 </script>
 
 <nav class={cn("flex items-center space-x-4 lg:space-x-6", className)}>
-	<a href="/examples/dashboard" class="text-sm font-medium transition-colors hover:text-primary">
-		Overview
+	<a href="/" class="text-sm font-medium transition-colors hover:text-primary">
+		Home
 	</a>
-
+	{#if data.user}
 	<a
-		href="/examples/dashboard"
+		href="/my/trips"
 		class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
 	>
-		Customers
+		Trips
 	</a>
+	{:else}
 	<a
-		href="/examples/dashboard"
+		href="/login"
 		class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
 	>
-		Products
+		Login
 	</a>
 	<a
-		href="/examples/dashboard"
+		href="/sign-up"
 		class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
 	>
-		Settings
+		Sign Up
 	</a>
+	{/if}
 </nav>

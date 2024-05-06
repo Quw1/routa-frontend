@@ -1,6 +1,7 @@
 <script lang="ts">
     import * as Form from "$lib/components/ui/form";
     import { Input } from "$lib/components/ui/input";
+	import { LoaderCircle } from "lucide-svelte";
     import { formSchema, type FormSchema } from "./schema";
     import {
       type SuperValidated,
@@ -15,10 +16,10 @@
       validators: zodClient(formSchema),
     });
    
-    const { form: formData, enhance } = form;
+    const { form: formData, enhance, delayed } = form;
   </script>
-   
-  <form method="POST" use:enhance>
+   <div class="flex">
+  <form class="w-[280px] justify-start pl-4 text-left font-normal m-auto" method="POST" use:enhance>
     <Form.Field {form} name="email">
         <Form.Control let:attrs>
           <Form.Label>E-mail</Form.Label>
@@ -35,5 +36,11 @@
         <Form.Description>This is your password</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
-    <Form.Button>Submit</Form.Button>
-  </form>
+      {#if $delayed}
+      <Form.Button class="" disabled>
+        <LoaderCircle class="animate-spin" />
+        </Form.Button>
+    {:else}
+      <Form.Button class="">Login</Form.Button>
+    {/if}
+  </form></div>

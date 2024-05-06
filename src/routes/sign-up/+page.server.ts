@@ -1,12 +1,15 @@
 import type { PageServerLoad, Actions, Action } from "./$types.js";
 import { fail, redirect } from "@sveltejs/kit";
-import { setError, superValidate } from "sveltekit-superforms";
+import { message, setError, superValidate } from "sveltekit-superforms";
 import { formSchema } from "./schema";
 import { zod } from "sveltekit-superforms/adapters";
 import { BackendURL } from "$lib";
 import { toast } from 'svelte-sonner';
  
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({locals}) => {
+  if (locals.user) {
+    throw redirect(302, '/');
+  }
   return {
     form: await superValidate(zod(formSchema)),
   };
@@ -31,8 +34,7 @@ const register: Action =  async (event) => {
 
       if (res.ok) {
           const responseData = await res.json(); 
-          toast.success('Registered successfully')
-          return true;
+          return message(form, 'Registered successfully, confirm your email');
           
       } else {
         const responseData = await res.json(); 
